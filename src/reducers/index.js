@@ -1,8 +1,8 @@
-import { combineReducers } from 'redux';
-import { persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
+import { combineReducers } from "redux";
+import { persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
 
-import Coordinate from './coordinate';
+import Coordinate from "./coordinate";
 
 /**
  *
@@ -20,9 +20,9 @@ const rootReducer = combineReducers({
 });
 
 const persistConfig = {
-  key: 'root',
+  key: "root",
   storage,
-  whitelist: [''],
+  whitelist: [""],
 };
 
 export default persistReducer(persistConfig, rootReducer);

@@ -1,5 +1,5 @@
-import { coordinateDummy } from '../initalState';
-import * as Constants from '../constants';
+import { coordinateDummy } from "../initalState";
+import * as Constants from "../constants";
 
 const reducer = (state = coordinateDummy, action) => {
   switch (action.type) {
