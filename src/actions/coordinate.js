@@ -1,22 +1,33 @@
-import * as Constants from '../constants';
+import axios from "axios";
+export const SET_ITEMS = "SET_ITEMS";
+export const SET_KEYWORD = "SET_KEYWORD";
 
-export const addCoordinateAction = (data) => {
+const BASE_URL = process.env.REACT_APP_SEARCH_API;
+
+export const search = (value) => async (dispatch) => {
+  try {
+    const URL = `${BASE_URL}search-conditions/?name=${value}`;
+    const items = await axios.get(URL);
+    dispatch(setItems(items.data.slice(0, 10)));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const setItems = (items) => {
   return {
-    type: Constants.ADD_COORDINATE,
-    data,
+    type: SET_ITEMS,
+    payload: {
+      items,
+    },
   };
 };
 
-export const updateCoordinateAction = (data) => {
+export const setKeyword = (keyword) => {
   return {
-    type: Constants.UPDATE_COORDINATE,
-    data,
-  };
-};
-
-export const deleteCoordinateAction = (id) => {
-  return {
-    type: Constants.DELETE_COORDINATE,
-    id,
+    type: SET_KEYWORD,
+    payload: {
+      keyword,
+    },
   };
 };
