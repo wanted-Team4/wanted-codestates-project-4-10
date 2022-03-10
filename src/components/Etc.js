@@ -1,7 +1,7 @@
 const Etc = () => {
   return (
     <div>
-      <h1>Etc</h1>
+      <h1>그냥 업로드 용도!</h1>
     </div>
   );
 };
