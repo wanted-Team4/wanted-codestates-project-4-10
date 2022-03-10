@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import '@fortawesome/fontawesome-free/js/all.js';
-import Result from './Result';
 import axios from 'axios';
 const Layout = () => {
   const [searchData, setSearchData] = useState([]);
