@@ -1,11 +1,10 @@
-import React from "react";
-import { BrowserRouter } from "react-router-dom";
-import "./App.css";
-import { Provider } from "react-redux";
-import store from "./store/configure";
-import { persistStore } from "redux-persist";
-import { PersistGate } from "redux-persist/integration/react";
-import Home from "./Page/Home";
+import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import store from './store/configure';
+import { persistStore } from 'redux-persist';
+import { PersistGate } from 'redux-persist/integration/react';
+import Home from './Page/Home';
 
 const persistor = persistStore(store);
 
