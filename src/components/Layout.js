@@ -27,6 +27,7 @@ const AllBox = styled.div`
   width: 100vw;
   height: 100vh;
   background: rgb(202, 233, 255);
+  overflow: auto;
 `;
 const BoxTitle = styled.p`
   margin-bottom: 20px;
