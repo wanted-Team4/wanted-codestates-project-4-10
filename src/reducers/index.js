@@ -1,28 +1,10 @@
 import { combineReducers } from "redux";
-import { persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage";
+import searchDataReducer from "./searchDataReducer";
+import kewordReducer from "./kewordReducer";
 
-import Coordinate from "./coordinate";
-
-/**
- *
- * @param {prev state} state
- * @param {action} action
- */
 const rootReducer = combineReducers({
-  index: (state = {}, action) => {
-    switch (action.type) {
-      default:
-        return state;
-    }
-  },
-  Coordinate,
+  searchDataReducer,
+  kewordReducer,
 });
 
-const persistConfig = {
-  key: "root",
-  storage,
-  whitelist: [""],
-};
-
-export default persistReducer(persistConfig, rootReducer);
+export default rootReducer;
