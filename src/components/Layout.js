@@ -6,6 +6,8 @@ const Layout = () => {
   const [searchData, setSearchData] = useState([]);
   const [valueData, setValueData] = useState('');
 
+  const ONE_MINUTE = 1000 * 60;
+
   const BASE_URL = process.env.REACT_APP_SEARCH_API;
   const getItem = async () => {
     await axios
@@ -13,6 +15,12 @@ const Layout = () => {
       .then((res) => {
         const name = res.data.slice(0, 10);
         setSearchData(name);
+        const object = {
+          data: res.data.slice(0, 10),
+          expireTime: new Date().getTime() + ONE_MINUTE,
+        };
+        localStorage.setItem(valueData, JSON.stringify(object));
+        return JSON.stringify(object);
       });
   };
 
@@ -24,13 +32,35 @@ const Layout = () => {
     return name === keyword.toString().toLowerCase(); // 네임 === 키워드  소문자 문자열로 리턴해준다.
   };
 
-  const onChange = (e) => {
+  const onChange = async (e) => {
     const result = searchData
       .filter((item) => connectName(item, e.target.value)) // 필터를 돌려 connectName 안의 value를 타겟팅 한다.
       .sort((a, b) => a.length - b.length); //문자배열에서 각 문자열의 길이를 기준으로 오름차순 정렬
     setSearchData(result); // setSearchData 안에 data 상태를 담음
     setValueData(e.target.value); // 현재 dom을 타켓으로
+
+    const checkCache = localStorage.getItem(e.target.value);
+
+    // 캐싱 안에 있을 경우
+    if (checkCache) {
+      return checkCache;
+    } else { // 캐싱 안에 없을 경우
+      getItem()
+    }
   };
+
+  useEffect(() => {
+    // 만료시간 지난 캐시 삭제
+    for (let el in localStorage) {
+      const localStorageElem = JSON.parse(localStorage.getItem(el));
+      if (
+        localStorageElem?.expireTime &&
+        localStorageElem?.expireTime <= Date.now()
+      ) {
+        localStorage.removeItem(el);
+      }
+    }
+  }, []);
 
   console.log();
 
