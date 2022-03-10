@@ -1,47 +1,47 @@
-import React, { useEffect, useRef, useState } from "react";
-import styled from "styled-components";
-import "@fortawesome/fontawesome-free/js/all.js";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { setItems, search, setKeyword } from "../actions/coordinate";
+import React, { useEffect, useRef, useState } from 'react';
+import styled from 'styled-components';
+import '@fortawesome/fontawesome-free/js/all.js';
+import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { setItems, search, setKeyword } from '../actions/coordinate';
 
 const Layout = () => {
   const [searchData, setSearchData] = useState([]);
-  const [valueData, setValueData] = useState("");
-  const { keyword } = useSelector((state) => state.kewordReducer);
-  const { items } = useSelector((state) => state.searchDataReducer);
-  const dispatch = useDispatch();
-  // 검색 키워드, api데이터
-  console.log(keyword, items);
+  const [valueData, setValueData] = useState('');
+  // const { keyword } = useSelector((state) => state.kewordReducer);
+  // const { items } = useSelector((state) => state.searchDataReducer);
+  // const dispatch = useDispatch();
+  // // 검색 키워드, api데이터
+  // console.log(keyword, items);
 
-  const getItem = async () => {
-    dispatch(search(valueData));
-    dispatch(setKeyword(valueData));
-  }
+  // const getItem = async () => {
+  //   dispatch(search(valueData));
+  //   dispatch(setKeyword(valueData));
+  // };
   const ONE_MINUTE = 1000 * 60;
 
-//   const BASE_URL = process.env.REACT_APP_SEARCH_API;
-//   const getItem = async () => {
-//     await axios
-//       .get(`${BASE_URL}search-conditions/?name=${valueData}`)
-//       .then((res) => {
-//         const name = res.data.slice(0, 10);
-//         setSearchData(name);
-//         const object = {
-//           data: res.data.slice(0, 10),
-//           expireTime: new Date().getTime() + ONE_MINUTE,
-//         };
-//         localStorage.setItem(valueData, JSON.stringify(object));
-//         return JSON.stringify(object);
-//       });
-//   };
+  const BASE_URL = process.env.REACT_APP_SEARCH_API;
+  const getItem = async () => {
+    await axios
+      .get(`${BASE_URL}search-conditions/?name=${valueData}`)
+      .then((res) => {
+        const name = res.data.slice(0, 10);
+        setSearchData(name);
+        const object = {
+          data: res.data.slice(0, 10),
+          expireTime: new Date().getTime() + ONE_MINUTE,
+        };
+        localStorage.setItem(valueData, JSON.stringify(object));
+        return JSON.stringify(object);
+      });
+  };
 
   useEffect(() => {
-    getItem();
+    // getItem();
   }, [valueData]);
 
   const connectName = (name, keyword) => {
-    if (keyword === "") return false; ///  키워드가 비었으면 false
+    if (keyword === '') return false; ///  키워드가 비었으면 false
     return name === keyword.toString().toLowerCase(); // 네임 === 키워드  소문자 문자열로 리턴해준다.
   };
 
@@ -57,25 +57,24 @@ const Layout = () => {
     // 캐싱 안에 있을 경우
     if (checkCache) {
       return checkCache;
-    } else { // 캐싱 안에 없을 경우
-      getItem()
+    } else {
+      // 캐싱 안에 없을 경우
+      getItem();
     }
   };
 
-  useEffect(() => {
-    // 만료시간 지난 캐시 삭제
-    for (let el in localStorage) {
-      const localStorageElem = JSON.parse(localStorage.getItem(el));
-      if (
-        localStorageElem?.expireTime &&
-        localStorageElem?.expireTime <= Date.now()
-      ) {
-        localStorage.removeItem(el);
-      }
-    }
-  }, []);
-
-  console.log();
+  // useEffect(() => {
+  //   // 만료시간 지난 캐시 삭제
+  //   for (let el in localStorage) {
+  //     const localStorageElem = JSON.parse(localStorage.getItem(el));
+  //     if (
+  //       localStorageElem?.expireTime &&
+  //       localStorageElem?.expireTime <= Date.now()
+  //     ) {
+  //       localStorage.removeItem(el);
+  //     }
+  //   }
+  // }, []);
 
   return (
     <AllBox>
@@ -86,14 +85,14 @@ const Layout = () => {
       <SearchAllBox>
         <SearchBox>
           <SvgBox>
-            <i className="fas fa-search" />
+            <i className='fas fa-search' />
           </SvgBox>
           <InputBox
             // ref={inputRef}
             onChange={onChange}
             value={valueData}
             // onKeyDown={onKeypress}
-            placeholder="질환명을 입력해주세요"
+            placeholder='질환명을 입력해주세요'
           ></InputBox>
         </SearchBox>
         <SearchBtn>검색</SearchBtn>
@@ -104,7 +103,7 @@ const Layout = () => {
           {searchData.map((list) => (
             <>
               <AutoCompleteLl key={list.id}>
-                <Icon className="fas fa-search" />
+                <Icon className='fas fa-search' />
                 {list.name}
               </AutoCompleteLl>
             </>
