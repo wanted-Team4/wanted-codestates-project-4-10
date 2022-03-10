@@ -1,8 +1,43 @@
-import React from 'react';
-import styled from 'styled-components';
-import '@fortawesome/fontawesome-free/js/all.js';
-import Result from './Result';
+import React, { useEffect, useRef, useState } from "react";
+import styled from "styled-components";
+import "@fortawesome/fontawesome-free/js/all.js";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { setItems, search, setKeyword } from "../actions/coordinate";
+
 const Layout = () => {
+  const [searchData, setSearchData] = useState([]);
+  const [valueData, setValueData] = useState("");
+  const { keyword } = useSelector((state) => state.kewordReducer);
+  const { items } = useSelector((state) => state.searchDataReducer);
+  const dispatch = useDispatch();
+  // 검색 키워드, api데이터
+  console.log(keyword, items);
+
+  const getItem = async () => {
+    dispatch(search(valueData));
+    dispatch(setKeyword(valueData));
+  };
+
+  useEffect(() => {
+    getItem();
+  }, [valueData]);
+
+  const connectName = (name, keyword) => {
+    if (keyword === "") return false; ///  키워드가 비었으면 false
+    return name === keyword.toString().toLowerCase(); // 네임 === 키워드  소문자 문자열로 리턴해준다.
+  };
+
+  const onChange = (e) => {
+    const result = searchData
+      .filter((item) => connectName(item, e.target.value)) // 필터를 돌려 connectName 안의 value를 타겟팅 한다.
+      .sort((a, b) => a.length - b.length); //문자배열에서 각 문자열의 길이를 기준으로 오름차순 정렬
+    setSearchData(result); // setSearchData 안에 data 상태를 담음
+    setValueData(e.target.value); // 현재 dom을 타켓으로
+  };
+
+  console.log();
+
   return (
     <AllBox>
       <BoxTitle>
@@ -12,13 +47,31 @@ const Layout = () => {
       <SearchAllBox>
         <SearchBox>
           <SvgBox>
-            <i className='fas fa-search' />
+            <i className="fas fa-search" />
           </SvgBox>
-          <InputBox placeholder='질환명을 입력해주세요'></InputBox>
+          <InputBox
+            // ref={inputRef}
+            onChange={onChange}
+            value={valueData}
+            // onKeyDown={onKeypress}
+            placeholder="질환명을 입력해주세요"
+          ></InputBox>
         </SearchBox>
         <SearchBtn>검색</SearchBtn>
       </SearchAllBox>
-      <Result></Result>
+      {valueData.length > 0 ? (
+        <AutoCompleteUl>
+          <Recommend>추천검색어</Recommend>
+          {searchData.map((list) => (
+            <>
+              <AutoCompleteLl key={list.id}>
+                <Icon className="fas fa-search" />
+                {list.name}
+              </AutoCompleteLl>
+            </>
+          ))}
+        </AutoCompleteUl>
+      ) : null}
     </AllBox>
   );
 };
@@ -74,4 +127,32 @@ const SvgBox = styled.div`
   margin-bottom: -5px;
 `;
 
+const Recommend = styled.p`
+  margin: 0;
+  margin-bottom: 20px;
+  font-size: 16px;
+  font-weight: bold;
+`;
+const AutoCompleteUl = styled.ul`
+  display: flex;
+  width: 58%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  list-style: none;
+  margin: 0 auto;
+  background-color: white;
+  border-radius: 20px;
+  padding: 5px;
+  padding: 20px;
+`;
+const AutoCompleteLl = styled.li`
+  margin-bottom: 22px;
+  color: #333;
+  font-weight: 400;
+  cursor: pointer;
+`;
+const Icon = styled.i`
+  margin-right: 10px;
+`;
 export default Layout;

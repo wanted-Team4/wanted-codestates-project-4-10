@@ -1,9 +1,9 @@
-import { KEY_DOWN } from "../actions/coordinate";
+import { SET_KEYWORD } from "../actions/coordinate";
 import { initialState } from "./initialState";
 
 const kewordReducer = (state = initialState, action) => {
   switch (action.type) {
-    case KEY_DOWN: {
+    case SET_KEYWORD: {
       return {
         ...state,
         keyword: action.payload.keyword,
