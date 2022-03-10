@@ -1,5 +1,5 @@
-import { coordinateDummy } from "../initalState";
-import * as Constants from "../constants";
+import { coordinateDummy } from '../initalState';
+import * as Constants from '../constants';
 
 const reducer = (state = coordinateDummy, action) => {
   switch (action.type) {
@@ -11,10 +11,7 @@ const reducer = (state = coordinateDummy, action) => {
       return {
         coordinate: [],
       };
-    case Constants.DELETE_COORDINATE:
-      return {
-        coordinate: [],
-      };
+
     default:
       return state;
   }
