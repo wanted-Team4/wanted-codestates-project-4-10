@@ -1,8 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import '@fortawesome/fontawesome-free/js/all.js';
-import { createGlobalStyle } from 'styled-components';
+import "@fortawesome/fontawesome-free/js/all.js";
+
+import App from "./App";
+import React from "react";
+import ReactDOM from "react-dom";
+import { createGlobalStyle } from "styled-components";
+
 const GlobalStyle = createGlobalStyle`
 body {
   font-weight: 300;
@@ -30,5 +32,5 @@ ReactDOM.render(
     <GlobalStyle />
     <App />
   </>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
