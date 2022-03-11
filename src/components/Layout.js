@@ -17,7 +17,7 @@ const Layout = () => {
   // // 검색 키워드, api데이터
   console.log(keyword, items);
 
-  const getItem = async () => {};
+  const getItem = async () => { };
 
   // const BASE_URL = process.env.REACT_APP_SEARCH_API;
   // const getItem = async () => {
@@ -88,18 +88,18 @@ const Layout = () => {
     }
   };
 
-  // useEffect(() => {
-  //   // 만료시간 지난 캐시 삭제
-  //   for (let el in localStorage) {
-  //     const localStorageElem = JSON.parse(localStorage.getItem(el));
-  //     if (
-  //       localStorageElem?.expireTime &&
-  //       localStorageElem?.expireTime <= Date.now()
-  //     ) {
-  //       localStorage.removeItem(el);
-  //     }
-  //   }
-  // }, []);
+  useEffect(() => {
+    // 만료시간 지난 캐시 삭제
+    for (let el in localStorage) {
+      const localStorageEl = JSON.parse(localStorage.getItem(el));
+      if (
+        localStorageEl?.expireTime &&
+        localStorageEl?.expireTime <= Date.now()
+      ) {
+        localStorage.removeItem(el);
+      }
+    }
+  }, []);
 
   return (
     <AllBox>
