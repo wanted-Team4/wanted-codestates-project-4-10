@@ -47,9 +47,11 @@ const Layout = () => {
       dispatch(setItems(JSON.parse(checkCache)));
     } else {
       // 캐싱 안에 없을 경우
-      dispatch(search(e.target.value));
-      dispatch(setKeyword(e.target.value));
-      // debounce(getItem(), 500);
+
+      debounce(
+        dispatch(search(e.target.value)) & dispatch(setKeyword(e.target.value)),
+        500
+      );
     }
   };
 
