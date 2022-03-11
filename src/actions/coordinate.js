@@ -9,10 +9,11 @@ export const search = (value) => async (dispatch) => {
   try {
     const URL = `${BASE_URL}search-conditions/?name=${value}`;
     const items = await axios.get(URL);
-    const object = {
-      data: items.data.slice(0, 10),
-      expireTime: new Date().getTime() + ONE_MINUTE,
-    };
+    const object = items.data.slice(0, 10)
+    // const object = {
+    //   data: items.data.slice(0, 10),
+    //   expireTime: new Date().getTime() + ONE_MINUTE,
+    // };
     localStorage.setItem(value, JSON.stringify(object));
     dispatch(setItems(items.data.slice(0, 10)));
   } catch (err) {

@@ -1,7 +1,7 @@
 import "@fortawesome/fontawesome-free/js/all.js";
 
 import React, { useEffect, useRef, useState } from "react";
-import { search, setKeyword } from "../actions/coordinate";
+import { setItems, search, setKeyword } from "../actions/coordinate";
 import { useDispatch, useSelector } from "react-redux";
 
 import Loading from "./Loading";
@@ -38,7 +38,7 @@ const Layout = () => {
 
     // 캐싱 안에 있을 경우
     if (checkCache) {
-      return checkCache;
+      dispatch(setItems(JSON.parse(checkCache)));
     } else {
       // 캐싱 안에 없을 경우
       dispatch(search(e.target.value));
@@ -62,18 +62,18 @@ const Layout = () => {
     }
   };
 
-  useEffect(() => {
-    // 만료시간 지난 캐시 삭제
-    for (let el in localStorage) {
-      const localStorageEl = JSON.parse(localStorage.getItem(el));
-      if (
-        localStorageEl?.expireTime &&
-        localStorageEl?.expireTime <= Date.now()
-      ) {
-        localStorage.removeItem(el);
-      }
-    }
-  }, []);
+  // useEffect(() => {
+  //   // 만료시간 지난 캐시 삭제
+  //   for (let el in localStorage) {
+  //     const localStorageEl = JSON.parse(localStorage.getItem(el));
+  //     if (
+  //       localStorageEl?.expireTime &&
+  //       localStorageEl?.expireTime <= Date.now()
+  //     ) {
+  //       localStorage.removeItem(el);
+  //     }
+  //   }
+  // }, []);
 
   return (
     <AllBox>
