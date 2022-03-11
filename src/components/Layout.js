@@ -1,12 +1,14 @@
-import React, { useEffect, useRef, useState } from "react";
-import styled from "styled-components";
 import "@fortawesome/fontawesome-free/js/all.js";
-import axios from "axios";
+
+import React, { useEffect, useRef, useState } from "react";
+import { search, setKeyword } from "../actions/coordinate";
 import { useDispatch, useSelector } from "react-redux";
-import { setItems, search, setKeyword } from "../actions/coordinate";
+
+import Loading from "./Loading";
+import styled from "styled-components";
 
 const Layout = () => {
-  const [searchData, setSearchData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [valueData, setValueData] = useState("");
   const inputRef = useRef();
   const [select, setSelect] = useState(-1);
@@ -14,35 +16,11 @@ const Layout = () => {
   const { items } = useSelector((state) => state.searchDataReducer);
   const dispatch = useDispatch();
 
-  // // 검색 키워드, api데이터
-  console.log(keyword, items);
-
-  const getItem = async () => { };
-
-  // const BASE_URL = process.env.REACT_APP_SEARCH_API;
-  // const getItem = async () => {
-  //     await axios
-  //         .get(`${BASE_URL}search-conditions/?name=${valueData}`)
-  //         .then((res) => {
-  //             const name = res.data.slice(0, 10);
-  //             setSearchData(name);
-  //             const object = {
-  //                 data: res.data.slice(0, 10),
-  //                 expireTime: new Date().getTime() + ONE_MINUTE,
-  //             };
-  //             localStorage.setItem(valueData, JSON.stringify(object));
-  //             return JSON.stringify(object);
-  //         });
-  // };
+  // const getItem = async () => {};
 
   useEffect(() => {
-    if (valueData) getItem();
+    if (valueData) setLoading(false);
   }, [valueData]);
-
-  const connectName = (name, keyword) => {
-    if (keyword === "") return false; ///  키워드가 비었으면 false
-    return name === keyword.toString().toLowerCase(); // 네임 === 키워드  소문자 문자열로 리턴해준다.
-  };
 
   //onChange 시, api 호출요청을 줄이기 위한 debounce 함수 : 딜레이시간을 정해서 쓴다.
   const debounce = (callback, delay) => {
@@ -53,23 +31,19 @@ const Layout = () => {
     };
   };
 
-  const onChange = async (e) => {
-    // const result = items
-    //   .filter((item) => connectName(item, e.target.value)) // 필터를 돌려 connectName 안의 value를 타겟팅 한다.
-    //   .sort((a, b) => a.length - b.length); //문자배열에서 각 문자열의 길이를 기준으로 오름차순 정렬
+  const onChange = (e) => {
     setValueData(e.target.value); // 현재 dom을 타켓으로
 
     const checkCache = localStorage.getItem(e.target.value);
-
-    dispatch(search(e.target.value));
-    dispatch(setKeyword(e.target.value));
 
     // 캐싱 안에 있을 경우
     if (checkCache) {
       return checkCache;
     } else {
       // 캐싱 안에 없을 경우
-      debounce(getItem(), 500);
+      dispatch(search(e.target.value));
+      dispatch(setKeyword(e.target.value));
+      // debounce(getItem(), 500);
     }
   };
 
@@ -125,14 +99,18 @@ const Layout = () => {
       {items.length > 0 ? (
         <AutoCompleteUl>
           <Recommend>추천검색어</Recommend>
-          {items.map((list, index) => (
-            <>
-              <AutoCompleteLl key={list.id} select={index === select}>
-                <Icon className="fas fa-search" />
-                {list.name}
-              </AutoCompleteLl>
-            </>
-          ))}
+          {loading ? (
+            <Loading />
+          ) : (
+            items.map((list, index) => (
+              <>
+                <AutoCompleteLl key={list.id} select={index === select}>
+                  <Icon className="fas fa-search" />
+                  {list.name}
+                </AutoCompleteLl>
+              </>
+            ))
+          )}
         </AutoCompleteUl>
       ) : null}
     </AllBox>

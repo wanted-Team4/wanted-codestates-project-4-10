@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
-import searchDataReducer from "./searchDataReducer";
 import kewordReducer from "./kewordReducer";
+import searchDataReducer from "./searchDataReducer";
 
 const rootReducer = combineReducers({
   searchDataReducer,
