@@ -56,7 +56,7 @@ const Layout = () => {
   const onKeypress = ({ key }) => {
     if (key === "Enter") {
       dispatch(setKeyword(inputRef.current.value));
-      //이동
+      linkMove(inputRef.current.value);
     } else if (key === "ArrowDown") {
       const index = (select + 1) % 10;
       setSelect(index);
@@ -66,6 +66,14 @@ const Layout = () => {
       setSelect(index);
       setValueData(items[index] ? items[index].name : keyword);
     }
+  };
+
+  const linkMove = (keyword) => {
+    if (!keyword) return;
+    window.open(
+      `https://clinicaltrialskorea.com/studies?condition=${keyword}`,
+      "_self"
+    );
   };
 
   // useEffect(() => {
@@ -100,7 +108,7 @@ const Layout = () => {
             placeholder="질환명을 입력해주세요"
           ></InputBox>
         </SearchBox>
-        <SearchBtn>검색</SearchBtn>
+        <SearchBtn onClick={() => linkMove(valueData)}>검색</SearchBtn>
       </SearchAllBox>
       {items.length > 0 ? (
         <AutoCompleteUl>
