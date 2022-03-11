@@ -1,4 +1,4 @@
-import { SET_KEYWORD } from "../actions/coordinate";
+import { SET_KEYWORD } from "../actions/index";
 import { initialState } from "./initialState";
 
 const kewordReducer = (state = initialState, action) => {
