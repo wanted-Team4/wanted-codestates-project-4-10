@@ -19,7 +19,6 @@ const Layout = () => {
     dispatch(search(valueData));
     dispatch(setKeyword(valueData));
   };
-  const ONE_MINUTE = 1000 * 60;
 
   // const BASE_URL = process.env.REACT_APP_SEARCH_API;
   // const getItem = async () => {
