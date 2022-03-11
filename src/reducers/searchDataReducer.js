@@ -1,4 +1,4 @@
-import { SET_ITEMS } from "../actions/coordinate";
+import { SET_ITEMS } from "../actions/index";
 import { initialState } from "./initialState";
 
 const searchDataReducer = (state = initialState, action) => {

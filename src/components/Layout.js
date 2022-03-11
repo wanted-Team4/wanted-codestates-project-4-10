@@ -1,7 +1,7 @@
 import "@fortawesome/fontawesome-free/js/all.js";
 
 import React, { useEffect, useRef, useState } from "react";
-import { setItems, search, setKeyword } from "../actions/coordinate";
+import { setItems, search, setKeyword } from "../actions/index";
 import { useDispatch, useSelector } from "react-redux";
 
 import Loading from "./Loading";
@@ -33,6 +33,12 @@ const Layout = () => {
 
   const onChange = (e) => {
     setValueData(e.target.value); // 현재 dom을 타켓으로
+
+    if (e.target.value === "") {
+      setSelect(-1);
+      dispatch(setItems([]));
+      return;
+    }
 
     const checkCache = localStorage.getItem(e.target.value);
 
