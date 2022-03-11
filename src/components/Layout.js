@@ -8,6 +8,8 @@ import { setItems, search, setKeyword } from "../actions/coordinate";
 const Layout = () => {
   const [searchData, setSearchData] = useState([]);
   const [valueData, setValueData] = useState("");
+  const inputRef = useRef();
+  const [select, setSelect] = useState(-1);
   const { keyword } = useSelector((state) => state.kewordReducer);
   const { items } = useSelector((state) => state.searchDataReducer);
   const dispatch = useDispatch();
@@ -15,10 +17,7 @@ const Layout = () => {
   // // 검색 키워드, api데이터
   console.log(keyword, items);
 
-  const getItem = async () => {
-    dispatch(search(valueData));
-    dispatch(setKeyword(valueData));
-  };
+  const getItem = async () => {};
 
   // const BASE_URL = process.env.REACT_APP_SEARCH_API;
   // const getItem = async () => {
@@ -37,7 +36,7 @@ const Layout = () => {
   // };
 
   useEffect(() => {
-    getItem();
+    if (valueData) getItem();
   }, [valueData]);
 
   const connectName = (name, keyword) => {
@@ -55,13 +54,15 @@ const Layout = () => {
   };
 
   const onChange = async (e) => {
-    const result = searchData
-      .filter((item) => connectName(item, e.target.value)) // 필터를 돌려 connectName 안의 value를 타겟팅 한다.
-      .sort((a, b) => a.length - b.length); //문자배열에서 각 문자열의 길이를 기준으로 오름차순 정렬
-    setSearchData(result); // setSearchData 안에 data 상태를 담음
+    // const result = items
+    //   .filter((item) => connectName(item, e.target.value)) // 필터를 돌려 connectName 안의 value를 타겟팅 한다.
+    //   .sort((a, b) => a.length - b.length); //문자배열에서 각 문자열의 길이를 기준으로 오름차순 정렬
     setValueData(e.target.value); // 현재 dom을 타켓으로
 
     const checkCache = localStorage.getItem(e.target.value);
+
+    dispatch(search(e.target.value));
+    dispatch(setKeyword(e.target.value));
 
     // 캐싱 안에 있을 경우
     if (checkCache) {
@@ -69,6 +70,21 @@ const Layout = () => {
     } else {
       // 캐싱 안에 없을 경우
       debounce(getItem(), 500);
+    }
+  };
+
+  const onKeypress = ({ key }) => {
+    if (key === "Enter") {
+      dispatch(setKeyword(inputRef.current.value));
+      //이동
+    } else if (key === "ArrowDown") {
+      const index = (select + 1) % 10;
+      setSelect(index);
+      setValueData(items[index] ? items[index].name : keyword);
+    } else if (key === "ArrowUp") {
+      const index = select - 1 >= 0 ? (select - 1) % 10 : select + 9;
+      setSelect(index);
+      setValueData(items[index] ? items[index].name : keyword);
     }
   };
 
@@ -97,10 +113,10 @@ const Layout = () => {
             <i className="fas fa-search" />
           </SvgBox>
           <InputBox
-            // ref={inputRef}
+            ref={inputRef}
             onChange={onChange}
             value={valueData}
-            // onKeyDown={onKeypress}
+            onKeyDown={onKeypress}
             placeholder="질환명을 입력해주세요"
           ></InputBox>
         </SearchBox>
@@ -109,9 +125,9 @@ const Layout = () => {
       {items.length > 0 ? (
         <AutoCompleteUl>
           <Recommend>추천검색어</Recommend>
-          {items.map((list) => (
+          {items.map((list, index) => (
             <>
-              <AutoCompleteLl key={list.id}>
+              <AutoCompleteLl key={list.id} select={index === select}>
                 <Icon className="fas fa-search" />
                 {list.name}
               </AutoCompleteLl>
@@ -194,8 +210,10 @@ const AutoCompleteUl = styled.ul`
   padding: 20px;
 `;
 const AutoCompleteLl = styled.li`
-  margin-bottom: 22px;
+  width: 100%;
+  padding: 10px 0px 10px 5px;
   color: #333;
+  background-color: ${(props) => (props.select ? "#9bcaeb" : "")};
   font-weight: 400;
   cursor: pointer;
 `;
