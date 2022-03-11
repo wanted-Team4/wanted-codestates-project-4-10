@@ -76,6 +76,11 @@ const Layout = () => {
     );
   };
 
+  const onClick = (keyword, index) => {
+    setValueData(keyword);
+    setSelect(index);
+  };
+
   // useEffect(() => {
   //   // 만료시간 지난 캐시 삭제
   //   for (let el in localStorage) {
@@ -118,7 +123,11 @@ const Layout = () => {
           ) : (
             items.map((list, index) => (
               <>
-                <AutoCompleteLl key={list.id} select={index === select}>
+                <AutoCompleteLl
+                  key={list.id}
+                  select={index === select}
+                  onClick={() => onClick(list.name, index)}
+                >
                   <Icon className="fas fa-search" />
                   {list.name}
                 </AutoCompleteLl>
