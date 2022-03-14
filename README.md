@@ -55,12 +55,6 @@ setTimeout으로 500마다 불리도록 설정하여 과도한 API 호출을 통
 
 
 
-- [X] 검색 영역 UI
-- [X] 검색 시 추천 검색어 창 구현
-- [X] Redux 상태 관리
-- [X] localStorage로 API 호출 최적화
-- [X] 웹 배포
-
 ### API 호출 최적화
 
 LocalStorage를 이용하여 검색 시 마다 API 요청을 서버에 하지 않고 한 번 검색을 했던 검색어는 LocalStorage에 저장을 하여 API 호출 횟수를 줄였습니다.
@@ -74,6 +68,14 @@ LocalStorage를 이용하여 검색 시 마다 API 요청을 서버에 하지 �
 - 처음 검색 시, 가져온 데이터를 저장하고 후 동일한 요청이 있을시 캐시를 이용하여 데이터를 가져오고,
 
     없을 경우 localStorage를 이용하여 저장을 할 수 있도록 하였습니다.
+    
+    
+    
+- [X] 검색 영역 UI
+- [X] 검색 시 추천 검색어 창 구현
+- [X] Redux 상태 관리
+- [X] localStorage로 API 호출 최적화
+- [X] 웹 배포
 
 ### <br/>
 
