@@ -33,15 +33,47 @@
 
 ### Stack
 
-`Javascript` `React` `Redux` `Styled-Components`
+`Javascript` `React` `Redux` `Styled-Components` `git Flow` `Axios`
 
 ### Features
+
+### 검색
+
+- 검색
+  10개의 상위 키워드가 추천되도록 구현했습니다.
+
+api는 보안을 위해 .env 파일에서 관리함으로 레포지토리에 올라가지 않도록 했습니다.
+
+- 키보드로 이동
+
+ArrowDown, ArrowUp으로 키보드를 인식하고 현재 표시중인 인덱스를 가져와 입력시 방향키로 원하는 키워들 선택할수있게 구현했습니다.
+
+### debounce
+
+- onChange가 일어날때마다 api호출되는걸 막아주는 함수를 사용하여
+setTimeout으로 500마다 불리도록 설정하여 과도한 API 호출을 통제했습니다.
+
+
 
 - [X] 검색 영역 UI
 - [X] 검색 시 추천 검색어 창 구현
 - [X] Redux 상태 관리
 - [X] localStorage로 API 호출 최적화
 - [X] 웹 배포
+
+### API 호출 최적화
+
+LocalStorage를 이용하여 검색 시 마다 API 요청을 서버에 하지 않고 한 번 검색을 했던 검색어는 LocalStorage에 저장을 하여 API 호출 횟수를 줄였습니다.
+
+### 구현
+
+- 로컬 캐싱을 구현하는 여러 방법이 있었지만 영구보관이 가능하고 데이터 유효 기간 설정이 가능한
+
+    localStorage가 좋을 것으로 생각되었습니다.
+
+- 처음 검색 시, 가져온 데이터를 저장하고 후 동일한 요청이 있을시 캐시를 이용하여 데이터를 가져오고,
+
+    없을 경우 localStorage를 이용하여 저장을 할 수 있도록 하였습니다.
 
 ### <br/>
 
